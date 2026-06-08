@@ -9,7 +9,7 @@
 - [x] Arrays & Strings
 - [x] For Loops
 - [x] While Loops
-- [ ] Functions (Pass by Value & Reference)
+- [x] Functions (Pass by Value & Reference)
 - [ ] Theory
 
 ### Build-up Logical Thinking
