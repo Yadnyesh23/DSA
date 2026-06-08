@@ -7,8 +7,8 @@
 - [x] If Else
 - [x] Switch Case
 - [x] Arrays & Strings
-- [ ] For Loops
-- [ ] While Loops
+- [x] For Loops
+- [x] While Loops
 - [ ] Functions (Pass by Value & Reference)
 - [ ] Theory
 
