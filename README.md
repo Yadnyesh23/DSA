@@ -6,7 +6,7 @@
 - [x] Cpp Basics
 - [x] If Else
 - [x] Switch Case
-- [ ] Arrays & Strings
+- [x] Arrays & Strings
 - [ ] For Loops
 - [ ] While Loops
 - [ ] Functions (Pass by Value & Reference)
