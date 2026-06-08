@@ -2,10 +2,10 @@
 
 ## 1. Learn The Basics
 ### Things to Know in C++/Java/Python or any language
-- [ ] Input Output
-- [ ] Cpp Basics
-- [ ] If Else
-- [ ] Switch Case
+- [x] Input Output
+- [x] Cpp Basics
+- [x] If Else
+- [x] Switch Case
 - [ ] Arrays & Strings
 - [ ] For Loops
 - [ ] While Loops
