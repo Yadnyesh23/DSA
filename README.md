@@ -26,7 +26,7 @@
 - [x] Pattern 7
 - [x] Pattern 8
 - [x] Pattern 9
-- [ ] Pattern 10
+- [x] Pattern 10
 - [ ] Pattern 11
 - [ ] Pattern 12
 - [ ] Pattern 13
