@@ -1,7 +1,7 @@
 # Data Structures and Algorithm
 
 ## 1. Learn The Basics
-### Things to Know in C++/Java/Python or any language
+### 1.1 Things to Know in C++/Java/Python or any language
 - [x] Input Output
 - [x] Cpp Basics
 - [x] If Else
@@ -12,11 +12,11 @@
 - [x] Functions (Pass by Value & Reference)
 - [ ] Theory
 
-### Build-up Logical Thinking - This is included in patterns folder
+### 1.2 Build-up Logical Thinking - This is included in patterns folder
 - [x] Easy and Medium
 - [x] Hard
 
-### Patterns
+### 1.3 Patterns
 - [x] Pattern 1
 - [x] Pattern 2
 - [x] Pattern 3
@@ -40,11 +40,11 @@
 - [ ] Pattern 21
 - [ ] Pattern 22
 
-### Learn STL/Java-Collections or similar thing in your language
+### 1.4 Learn STL/Java-Collections or similar thing in your language
 - [ ] STL
 - [ ] Java collection
 
-### Know Basic Maths
+### 1.5 Know Basic Maths
 - [ ] Count all Digits of a Number
 - [ ] Reverse a number
 - [ ] Palindrome Number
@@ -53,7 +53,7 @@
 - [ ] Print all Divisors
 - [ ] Check for Prime Number
 
-### Learn Basic Recursion
+### 1.6 Learn Basic Recursion
 - [ ] Understand recursion by print something N times
 - [ ] Print name N times using recursion
 - [ ] Print 1 to N using Recursion
@@ -64,7 +64,7 @@
 - [ ] Check if String is Palindrome or Not
 - [ ] Fibonacci Numberx
 
-### Learn Basic Hashing
+### 1.7 Learn Basic Hashing
 - [ ]  Basic Hashing
 - [ ]  Counting frequencies of array elements
 - [ ]  Highes occuring element in array
