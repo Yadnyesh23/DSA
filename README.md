@@ -24,8 +24,8 @@
 - [x] Pattern 5
 - [x] Pattern 6
 - [x] Pattern 7
-- [ ] Pattern 8
-- [ ] Pattern 9
+- [x] Pattern 8
+- [x] Pattern 9
 - [ ] Pattern 10
 - [ ] Pattern 11
 - [ ] Pattern 12
