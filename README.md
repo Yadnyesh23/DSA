@@ -12,9 +12,9 @@
 - [x] Functions (Pass by Value & Reference)
 - [ ] Theory
 
-### Build-up Logical Thinking
-- [ ] Easy and Medium
-- [ ] Hard
+### Build-up Logical Thinking - This is included in patterns folder
+- [x] Easy and Medium
+- [x] Hard
 
 ### Patterns
 - [x] Pattern 1
@@ -23,7 +23,7 @@
 - [x] Pattern 4
 - [x] Pattern 5
 - [x] Pattern 6
-- [ ] Pattern 7
+- [x] Pattern 7
 - [ ] Pattern 8
 - [ ] Pattern 9
 - [ ] Pattern 10
