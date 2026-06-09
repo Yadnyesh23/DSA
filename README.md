@@ -17,12 +17,12 @@
 - [ ] Hard
 
 ### Patterns
-- [ ] Pattern 1
-- [ ] Pattern 2
-- [ ] Pattern 3
-- [ ] Pattern 4
-- [ ] Pattern 5
-- [ ] Pattern 6
+- [x] Pattern 1
+- [x] Pattern 2
+- [x] Pattern 3
+- [x] Pattern 4
+- [x] Pattern 5
+- [x] Pattern 6
 - [ ] Pattern 7
 - [ ] Pattern 8
 - [ ] Pattern 9
