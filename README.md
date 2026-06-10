@@ -48,10 +48,10 @@
 - [x] Count all Digits of a Number
 - [x] Reverse a number
 - [x] Palindrome Number
-- [ ] GCD of Two Numbers
+- [x] GCD of Two Numbers
 - [x] Check if the Number is Armstrong
-- [ ] Print all Divisors
-- [ ] Check for Prime Number
+- [x] Print all Divisors
+- [x] Check for Prime Number
 
 ### 1.6 Learn Basic Recursion
 - [ ] Understand recursion by print something N times
