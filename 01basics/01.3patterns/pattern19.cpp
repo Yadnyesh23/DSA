@@ -18,36 +18,35 @@ int main() {
     cout << "Enter number of rows: ";
     cin >> rows;
     
+    int space = 0;
     //Upper
     for(int i = 0 ; i < rows ; i++){
         for(int j = 0 ; j < rows - i; j++){
             cout << "* ";
         }
-        for(int j = 0 ; j < i ; j++){
+        for(int j = 0 ; j < space ; j++){
             cout << "  ";
         }
-        for(int j = 0 ; j < i ; j++){
-            cout << "  ";
-        }
+        
         for(int j = 0 ; j < rows - i; j++){
             cout << "* ";
         }
+        space += 2;
         cout << endl;
     }
-    //Lower
+    space = 8;
+    // Lower
     for(int i = 0 ; i < rows ; i++){
         for(int j = 0 ; j <= i  ; j++){
             cout << "* ";
         }
-        for(int j = 0 ; j < rows - i - 1; j++ ){
-            cout << "  ";
-        }
-        for(int j = 0 ; j < rows - i - 1; j++ ){
+        for(int j = 0 ; j < space ; j++){
             cout << "  ";
         }
         for(int j = 0 ; j <= i  ; j++){
             cout << "* ";
         }
+        space -= 2;
         cout << endl;
     }
 
