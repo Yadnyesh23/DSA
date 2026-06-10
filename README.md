@@ -45,7 +45,7 @@
 - [ ] Java collection
 
 ### 1.5 Know Basic Maths
-- [ ] Count all Digits of a Number
+- [x] Count all Digits of a Number
 - [ ] Reverse a number
 - [ ] Palindrome Number
 - [ ] GCD of Two Numbers

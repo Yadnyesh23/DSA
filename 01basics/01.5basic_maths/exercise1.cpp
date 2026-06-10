@@ -1,5 +1,6 @@
 // Count number of digits in number give by user
 
+// Method 1
 #include <iostream>
 using namespace std;
 
@@ -17,4 +18,12 @@ int main() {
    cout << "Count : " << count ;
    
     return 0;
+}
+
+//Method 2
+#include<bits/stdc++.h>
+
+int count(int n){
+    int count = (int)(log10(n) + 1);
+    return count;
 }
