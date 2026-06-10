@@ -46,10 +46,10 @@
 
 ### 1.5 Know Basic Maths
 - [x] Count all Digits of a Number
-- [ ] Reverse a number
-- [ ] Palindrome Number
+- [x] Reverse a number
+- [x] Palindrome Number
 - [ ] GCD of Two Numbers
-- [ ] Check if the Number is Armstrong
+- [x] Check if the Number is Armstrong
 - [ ] Print all Divisors
 - [ ] Check for Prime Number
 
