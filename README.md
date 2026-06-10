@@ -27,18 +27,18 @@
 - [x] Pattern 8
 - [x] Pattern 9
 - [x] Pattern 10
-- [ ] Pattern 11
-- [ ] Pattern 12
-- [ ] Pattern 13
-- [ ] Pattern 14
-- [ ] Pattern 15
-- [ ] Pattern 16
-- [ ] Pattern 17
-- [ ] Pattern 18
-- [ ] Pattern 19
-- [ ] Pattern 20
-- [ ] Pattern 21
-- [ ] Pattern 22
+- [x] Pattern 11
+- [x] Pattern 12
+- [x] Pattern 13
+- [x] Pattern 14
+- [x] Pattern 15
+- [x] Pattern 16
+- [x] Pattern 17
+- [x] Pattern 18
+- [x] Pattern 19
+- [x] Pattern 20
+- [x] Pattern 21
+- [x] Pattern 22
 
 ### 1.4 Learn STL/Java-Collections or similar thing in your language
 - [ ] STL
