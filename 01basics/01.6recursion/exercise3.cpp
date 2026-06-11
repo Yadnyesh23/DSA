@@ -1,22 +1,24 @@
-// Print linearly from 1 to N
+// Print linearly from N to 1
 
 #include <iostream>
 using namespace std;
 
 
-void printNum(int i , int n){
-    if(i > n) return;
+
+void printNum(int i){
+    if(i < 1) return;
     cout << i << endl ;
-    i++;
-    printNum(i,n);
+    i--;
+    printNum(i);
 }
 int main() {
-    int i = 1;
+    
     int n;
     cout << "Enter n value : " ;
     cin >> n;
+    int i = n;
+    printNum(i);
     
-    printNum(i,n);
 
     return 0;
 }
