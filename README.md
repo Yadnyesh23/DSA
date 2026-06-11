@@ -54,9 +54,9 @@
 - [x] Check for Prime Number
 
 ### 1.6 Learn Basic Recursion
-- [ ] Understand recursion by print something N times
-- [ ] Print name N times using recursion
-- [ ] Print 1 to N using Recursion
+- [x] Understand recursion by print something N times
+- [x] Print name N times using recursion
+- [x] Print 1 to N using Recursion
 - [ ] Print N to 1 using Recursion
 - [ ] Sum of First N Numbers
 - [ ] Factorial of a given number
