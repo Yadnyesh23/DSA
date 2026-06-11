@@ -10,7 +10,7 @@
 - [x] For Loops
 - [x] While Loops
 - [x] Functions (Pass by Value & Reference)
-- [ ] Theory
+- [x] Time Complexity
 
 ### 1.2 Build-up Logical Thinking - This is included in patterns folder
 - [x] Easy and Medium
@@ -42,7 +42,7 @@
 
 ### 1.4 Learn STL/Java-Collections or similar thing in your language
 - [ ] STL
-- [ ] Java collection
+
 
 ### 1.5 Know Basic Maths
 - [x] Count all Digits of a Number
