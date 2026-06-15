@@ -417,3 +417,131 @@ for (auto it = ls.begin(); it != ls.end(); it++) {
 | `empty()`           | Returns `true` if list is empty          |
 | `clear()`           | Remove all elements                      |
 | `swap(other)`       | Swap contents with another list          |
+
+## 3. Deque (Double-Ended Queue)
+
+### What is a Deque and Why Do We Need It?
+
+A `deque` (pronounced *"deck"*) stands for **Double-Ended Queue**. It is a sequence container that allows **fast insertion and deletion at both the front and the back** — something a `vector` cannot do efficiently.
+
+Internally, a deque is stored as a **series of fixed-size chunks** (not a single contiguous block like a vector), which allows it to grow in both directions without shifting elements.
+
+```
+        push_front()                      push_back()
+             ↓                                ↓
+  ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+  │ 6 │ 5 │ 2 │ 4 │   │   │   │   │   │   │
+  └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+    ↑                 ↑
+  front()           back()
+```
+
+---
+
+### How is Deque Different from Vector and List?
+
+| Feature                    | `vector`        | `list`          | `deque`              |
+|----------------------------|-----------------|-----------------|----------------------|
+| Internal structure         | Dynamic array   | Doubly linked   | Chunked array        |
+| Insert/Delete at **back**  | ✅ `O(1)`       | ✅ `O(1)`       | ✅ `O(1)`            |
+| Insert/Delete at **front** | ❌ `O(n)`       | ✅ `O(1)`       | ✅ `O(1)`            |
+| Insert/Delete at **middle**| ❌ `O(n)`       | ✅ `O(1)`       | ❌ `O(n)`            |
+| Random access (`dq[i]`)    | ✅ `O(1)`       | ❌ Not supported| ✅ `O(1)`            |
+| Memory layout              | Contiguous      | Scattered       | Chunked (semi-contiguous) |
+| Cache performance          | ✅ Best         | ❌ Poor         | ⚠️ Moderate          |
+
+> 💡 **Use a `deque` when** you need fast insertions/deletions at **both ends** and still want **random access** — it's the best of both `vector` and `list` for this specific use case.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainDeque() {
+
+    deque<int> dq;              // Empty deque: {}
+
+    // --- Adding at the back ---
+    dq.push_back(2);            // {2}
+    dq.emplace_back(4);         // {2, 4}
+
+    // --- Adding at the front ---
+    dq.push_front(5);           // {5, 2, 4}
+    dq.emplace_front(6);        // {6, 5, 2, 4}
+    // emplace variants construct in-place — slightly faster than push variants
+
+    // --- Removing elements ---
+    dq.pop_back();              // {6, 5, 2}   — removes last element
+    dq.pop_front();             // {5, 2}      — removes first element
+
+    // --- Access ---
+    cout << dq.front();         // Output: 5   — first element
+    cout << dq.back();          // Output: 2   — last element
+    cout << dq[0];              // Output: 5   — random access (unlike list, this works!)
+    cout << dq.at(1);           // Output: 2   — safe random access with bounds check
+
+    // --- Size & empty check ---
+    cout << dq.size();          // Output: 2
+    cout << dq.empty();         // Output: 0 (false)
+
+    // --- Insert at a position (using iterator) ---
+    deque<int> dq2 = {10, 20, 30, 40};
+    dq2.insert(dq2.begin() + 2, 99);   // Insert 99 at index 2
+                                        // {10, 20, 99, 30, 40}
+
+    // --- Erase at a position ---
+    dq2.erase(dq2.begin() + 1);        // Remove element at index 1
+                                        // {10, 99, 30, 40}
+
+    // --- Other shared methods (same behaviour as vector) ---
+    // begin(), end(), rbegin(), rend() — for iteration
+    // clear()                          — removes all elements
+    // swap(other)                      — swaps two deques
+}
+```
+
+---
+
+### Printing a Deque
+
+```cpp
+deque<int> dq = {6, 5, 2, 4};
+
+// Range-based for loop (simplest)
+for (auto element : dq) {
+    cout << element << " ";
+}
+// Output: 6 5 2 4
+
+// Using iterator
+for (auto it = dq.begin(); it != dq.end(); it++) {
+    cout << *it << " ";
+}
+// Output: 6 5 2 4
+```
+
+---
+
+### Quick Reference
+
+| Method              | Description                                      |
+|---------------------|--------------------------------------------------|
+| `push_back(x)`      | Add `x` at the end                               |
+| `push_front(x)`     | Add `x` at the beginning                         |
+| `emplace_back(x)`   | Construct `x` in-place at the end                |
+| `emplace_front(x)`  | Construct `x` in-place at the beginning          |
+| `pop_back()`        | Remove last element                              |
+| `pop_front()`       | Remove first element                             |
+| `front()`           | Access first element                             |
+| `back()`            | Access last element                              |
+| `dq[i]`             | Random access at index `i` (no bounds check)     |
+| `dq.at(i)`          | Random access at index `i` (with bounds check)   |
+| `insert(it, x)`     | Insert `x` before iterator position              |
+| `erase(it)`         | Remove element at iterator position              |
+| `size()`            | Number of elements                               |
+| `empty()`           | Returns `true` if deque is empty                 |
+| `clear()`           | Remove all elements                              |
+| `swap(other)`       | Swap contents with another deque                 |
