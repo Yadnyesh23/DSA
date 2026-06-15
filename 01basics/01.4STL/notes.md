@@ -294,3 +294,126 @@ v.empty();      // Returns true if vector is empty, false otherwise
 | `v.swap(other)` | Swaps contents with another vector           | `void`      |
 | `v.clear()`     | Removes all elements (size → 0)              | `void`      |
 | `v.empty()`     | Checks if vector is empty                    | `bool`      |# Vectors
+
+## 2. Lists
+
+### What is a List and Why Do We Need It?
+
+A `list` in STL is a **doubly linked list** — each element holds a value and two pointers: one to the **next** node and one to the **previous** node. Unlike a vector, elements are **not stored in contiguous memory**.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  NULL ← [6] ↔ [5] ↔ [2] ↔ [4] → NULL                 │
+│          ↑                   ↑                          │
+│        front()             back()                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+### How is List Different from Vector?
+
+| Feature                  | `vector`                  | `list`                        |
+|--------------------------|---------------------------|-------------------------------|
+| Internal structure       | Dynamic array             | Doubly linked list            |
+| Memory layout            | Contiguous                | Scattered (nodes on heap)     |
+| Random access (`v[i]`)   | ✅ `O(1)`                 | ❌ Not supported              |
+| Insert/Delete at middle  | ❌ Slow `O(n)` (shifting) | ✅ Fast `O(1)` (pointer swap) |
+| Insert/Delete at front   | ❌ Slow `O(n)`            | ✅ Fast `O(1)`                |
+| Insert/Delete at back    | ✅ Fast `O(1)`            | ✅ Fast `O(1)`                |
+| Cache performance        | ✅ Great (contiguous)     | ❌ Poor (scattered memory)    |
+| Iterators                | Random access iterator    | Bidirectional iterator only   |
+
+> 💡 **Use a `list` when** you need frequent insertions/deletions in the **middle or front** of a sequence. Use a `vector` when you need fast **random access** or cache-friendly traversal.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainList() {
+
+    list<int> ls;           // Empty list: {}
+
+    // --- Adding at the back ---
+    ls.push_back(2);        // {2}
+    ls.emplace_back(4);     // {2, 4}
+
+    // --- Adding at the front ---
+    ls.push_front(5);       // {5, 2, 4}
+    ls.emplace_front(6);    // {6, 5, 2, 4}
+    // emplace_front / emplace_back construct in-place (faster than push variants)
+
+    // --- Removing elements ---
+    ls.pop_back();          // {6, 5, 2}    — removes last element
+    ls.pop_front();         // {5, 2}       — removes first element
+
+    // --- Access ---
+    cout << ls.front();     // Output: 5    — first element
+    cout << ls.back();      // Output: 2    — last element
+    // ⚠️ No ls[i] or ls.at(i) — lists do NOT support random access
+
+    // --- Size & empty check ---
+    cout << ls.size();      // Output: 2
+    cout << ls.empty();     // Output: 0 (false)
+
+    // --- Insert at a position (using iterator) ---
+    list<int> ls2 = {10, 20, 30, 40};
+    auto it = ls2.begin();
+    advance(it, 2);         // Move iterator to index 2 (points to 30)
+    ls2.insert(it, 99);     // {10, 20, 99, 30, 40}
+
+    // --- Erase at a position ---
+    ls2.erase(it);          // Removes element at iterator position
+                            // {10, 20, 99, 40}
+
+    // --- Other shared methods (same behaviour as vector) ---
+    // begin(), end(), rbegin(), rend() — for iteration
+    // clear()                          — removes all elements
+    // swap(other)                      — swaps two lists
+}
+```
+
+---
+
+### Printing a List
+
+```cpp
+list<int> ls = {6, 5, 2, 4};
+
+// Range-based for loop (simplest)
+for (auto element : ls) {
+    cout << element << " ";
+}
+// Output: 6 5 2 4
+
+// Using iterator
+for (auto it = ls.begin(); it != ls.end(); it++) {
+    cout << *it << " ";
+}
+// Output: 6 5 2 4
+```
+
+---
+
+### Quick Reference
+
+| Method              | Description                              |
+|---------------------|------------------------------------------|
+| `push_back(x)`      | Add `x` at the end                       |
+| `push_front(x)`     | Add `x` at the beginning                 |
+| `emplace_back(x)`   | Construct `x` in-place at the end        |
+| `emplace_front(x)`  | Construct `x` in-place at the beginning  |
+| `pop_back()`        | Remove last element                      |
+| `pop_front()`       | Remove first element                     |
+| `front()`           | Access first element                     |
+| `back()`            | Access last element                      |
+| `insert(it, x)`     | Insert `x` before iterator position      |
+| `erase(it)`         | Remove element at iterator position      |
+| `size()`            | Number of elements                       |
+| `empty()`           | Returns `true` if list is empty          |
+| `clear()`           | Remove all elements                      |
+| `swap(other)`       | Swap contents with another list          |
