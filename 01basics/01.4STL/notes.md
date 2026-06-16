@@ -1335,4 +1335,193 @@ Worried about hash collisions?   → set  (guaranteed O(log n) worst case)
 | `lower_bound(x)` | ❌ Not supported                                    | —                       |
 | `upper_bound(x)` | ❌ Not supported                                    | —                       |
 
-<!-- ## 10. Maps -->
+# 10. Map
+
+## What is a Map and Why Do We Need It?
+
+A `map` is an associative container that stores **key-value pairs**, where:
+- Every **key is unique**
+- Keys are always stored in **sorted order**
+- Each key maps to exactly **one value**
+
+Internally, a `map` is implemented as a **Red-Black Tree** (just like `set`), giving `O(log n)` for insert, find, and erase. Think of it as a `set` but where each element carries an associated value.
+
+```
+  map<int, int> after inserting (1,2), (2,3), (3,4):
+
+  Key:    1      2      3
+          ↓      ↓      ↓
+  Value:  2      3      4
+
+  Always sorted by key. Access value via key in O(log n).
+```
+
+---
+
+## How is Map Different from Others?
+
+| Feature               | `set`          | `unordered_set` | `map`                  | `unordered_map`       |
+|-----------------------|----------------|-----------------|------------------------|-----------------------|
+| Stores                | Keys only      | Keys only       | Key-value pairs        | Key-value pairs       |
+| Duplicate keys        | ❌             | ❌              | ❌                     | ❌                    |
+| Sorted by key         | ✅             | ❌              | ✅                     | ❌                    |
+| Access by key         | ❌             | ❌              | ✅ `O(log n)`          | ✅ `O(1)` avg         |
+| `lower_bound`         | ✅             | ❌              | ✅                     | ❌                    |
+| Use case              | Unique values  | Fast lookup     | Sorted key-value store | Fast key-value store  |
+
+> 💡 **Use a `map` when** you need to associate values with keys and want them in **sorted key order** — e.g. word frequency counters, phone books, configuration stores, or graph adjacency lists.
+
+---
+
+## Declaring a Map
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainMap() {
+
+    // Standard key-value map
+    map<int, int> mpp;                      // key: int, value: int
+
+    // Value can be a pair
+    map<int, pair<int, int>> mpp2;          // key: int, value: pair<int,int>
+
+    // Key can also be a pair
+    map<pair<int, int>, int> mpp3;          // key: pair<int,int>, value: int
+```
+
+---
+
+## Inserting Elements
+
+```cpp
+    map<int, int> mpp;
+
+    // Method 1: Subscript operator — creates key if it doesn't exist
+    mpp[1] = 2;                             // {1→2}
+
+    // Method 2: insert() with a pair
+    mpp.insert({2, 3});                     // {1→2, 2→3}
+
+    // Method 3: emplace() — constructs in-place, slightly faster
+    mpp.emplace(3, 4);                      // {1→2, 2→3, 3→4}
+
+    // Final map (always sorted by key):
+    // { {1,2}, {2,3}, {3,4} }
+
+    // ⚠️ Using [] with a non-existent key auto-inserts it with default value 0
+    cout << mpp[99];                        // Prints 0 AND inserts {99→0} into the map!
+    // Use find() instead if you don't want accidental insertion
+```
+
+---
+
+## Accessing Elements
+
+```cpp
+    map<int, int> mpp = {{1,2}, {2,3}, {3,4}};
+
+    // Subscript access — O(log n)
+    cout << mpp[2];                         // Output: 3  (value for key 2)
+
+    // Safe access with find()
+    auto it = mpp.find(3);
+    if (it != mpp.end()) {
+        cout << it->first;                  // Output: 3  (key)
+        cout << it->second;                 // Output: 4  (value)
+    }
+
+    auto it2 = mpp.find(99);
+    if (it2 == mpp.end()) {
+        cout << "Key not found";            // Output: Key not found
+    }
+    // ⚠️ mpp.find() returns an iterator, not a value — use -> to access key/value
+    // ⚠️ mpp[key] auto-inserts if missing; mpp.find() does NOT
+```
+
+---
+
+## Iterating a Map
+
+```cpp
+    map<int, int> mpp = {{1,2}, {2,3}, {3,4}};
+
+    // Each element is a pair<const Key, Value>
+    for (auto it : mpp) {
+        cout << it.first << " → " << it.second << "\n";
+    }
+    // Output (always in sorted key order):
+    // 1 → 2
+    // 2 → 3
+    // 3 → 4
+
+    // Using structured bindings (C++17, cleaner)
+    for (auto& [key, value] : mpp) {
+        cout << key << " → " << value << "\n";
+    }
+```
+
+---
+
+## Using a Pair as a Key
+
+```cpp
+    map<pair<int, int>, int> mpp3;
+
+    mpp3[{2, 3}] = 10;                      // key=(2,3), value=10
+    mpp3[{1, 2}] = 5;                       // key=(1,2), value=5
+
+    // Sorted by key pair (lexicographically):
+    // { {1,2}→5, {2,3}→10 }
+
+    cout << mpp3[{2, 3}];                   // Output: 10
+```
+
+---
+
+## Erasing Elements
+
+```cpp
+    map<int, int> mpp = {{1,2}, {2,3}, {3,4}, {4,5}};
+
+    mpp.erase(2);                           // Erase by key → {1→2, 3→4, 4→5}
+
+    auto it = mpp.find(3);
+    mpp.erase(it);                          // Erase by iterator → {1→2, 4→5}
+```
+
+---
+
+## Lower Bound & Upper Bound
+
+```cpp
+    map<int, int> mpp = {{1,10}, {3,30}, {5,50}};
+
+    auto lb = mpp.lower_bound(3);           // Iterator to first key >= 3
+    cout << lb->first;                      // Output: 3
+
+    auto ub = mpp.upper_bound(3);           // Iterator to first key > 3
+    cout << ub->first;                      // Output: 5
+}
+```
+
+---
+
+## Quick Reference
+
+| Method               | Description                                              | Time        |
+|----------------------|----------------------------------------------------------|-------------|
+| `mpp[key] = val`     | Insert or update value at key (inserts if key missing)   | `O(log n)`  |
+| `insert({key, val})` | Insert pair (no-op if key already exists)               | `O(log n)`  |
+| `emplace(key, val)`  | Construct pair in-place (no-op if key exists)           | `O(log n)`  |
+| `erase(key)`         | Remove element by key                                   | `O(log n)`  |
+| `erase(it)`          | Remove element at iterator                              | `O(1)`      |
+| `find(key)`          | Iterator to key, or `end()` if not found                | `O(log n)`  |
+| `count(key)`         | `1` if key exists, `0` otherwise                        | `O(log n)`  |
+| `mpp[key]`           | Access value (⚠️ inserts default if key missing)        | `O(log n)`  |
+| `lower_bound(key)`   | Iterator to first key `>= key`                         | `O(log n)`  |
+| `upper_bound(key)`   | Iterator to first key `> key`                          | `O(log n)`  |
+| `size()`             | Number of key-value pairs                               | `O(1)`      |
+| `empty()`            | Returns `true` if map is empty                          | `O(1)`      |
+| `clear()`            | Removes all elements                                    | `O(n)`      |
