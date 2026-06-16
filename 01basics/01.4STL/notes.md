@@ -1335,9 +1335,9 @@ Worried about hash collisions?   → set  (guaranteed O(log n) worst case)
 | `lower_bound(x)` | ❌ Not supported                                    | —                       |
 | `upper_bound(x)` | ❌ Not supported                                    | —                       |
 
-# 10. Map
+## 10. Map
 
-## What is a Map and Why Do We Need It?
+### What is a Map and Why Do We Need It?
 
 A `map` is an associative container that stores **key-value pairs**, where:
 - Every **key is unique**
@@ -1358,7 +1358,7 @@ Internally, a `map` is implemented as a **Red-Black Tree** (just like `set`), gi
 
 ---
 
-## How is Map Different from Others?
+### How is Map Different from Others?
 
 | Feature               | `set`          | `unordered_set` | `map`                  | `unordered_map`       |
 |-----------------------|----------------|-----------------|------------------------|-----------------------|
@@ -1373,7 +1373,7 @@ Internally, a `map` is implemented as a **Red-Black Tree** (just like `set`), gi
 
 ---
 
-## Declaring a Map
+### Declaring a Map
 
 ```cpp
 #include <bits/stdc++.h>
@@ -1393,7 +1393,7 @@ void explainMap() {
 
 ---
 
-## Inserting Elements
+### Inserting Elements
 
 ```cpp
     map<int, int> mpp;
@@ -1417,7 +1417,7 @@ void explainMap() {
 
 ---
 
-## Accessing Elements
+### Accessing Elements
 
 ```cpp
     map<int, int> mpp = {{1,2}, {2,3}, {3,4}};
@@ -1442,7 +1442,7 @@ void explainMap() {
 
 ---
 
-## Iterating a Map
+### Iterating a Map
 
 ```cpp
     map<int, int> mpp = {{1,2}, {2,3}, {3,4}};
@@ -1464,7 +1464,7 @@ void explainMap() {
 
 ---
 
-## Using a Pair as a Key
+### Using a Pair as a Key
 
 ```cpp
     map<pair<int, int>, int> mpp3;
@@ -1480,7 +1480,7 @@ void explainMap() {
 
 ---
 
-## Erasing Elements
+### Erasing Elements
 
 ```cpp
     map<int, int> mpp = {{1,2}, {2,3}, {3,4}, {4,5}};
@@ -1493,7 +1493,7 @@ void explainMap() {
 
 ---
 
-## Lower Bound & Upper Bound
+### Lower Bound & Upper Bound
 
 ```cpp
     map<int, int> mpp = {{1,10}, {3,30}, {5,50}};
@@ -1508,7 +1508,7 @@ void explainMap() {
 
 ---
 
-## Quick Reference
+### Quick Reference
 
 | Method               | Description                                              | Time        |
 |----------------------|----------------------------------------------------------|-------------|
@@ -1525,3 +1525,149 @@ void explainMap() {
 | `size()`             | Number of key-value pairs                               | `O(1)`      |
 | `empty()`            | Returns `true` if map is empty                          | `O(1)`      |
 | `clear()`            | Removes all elements                                    | `O(n)`      |
+
+## 11. Multimap
+
+### What is a Multimap and Why Do We Need It?
+
+A `multimap` is exactly like a `map` — it stores **key-value pairs** in **sorted key order** — but with one key difference: it **allows duplicate keys**. Multiple values can be associated with the same key.
+
+Internally, it is also a **Red-Black Tree**, so all operations remain `O(log n)`.
+
+```
+  multimap<int,int> after inserting (1,2), (1,3), (2,5):
+
+  Key:    1      1      2
+          ↓      ↓      ↓
+  Value:  2      3      5
+
+  Both entries for key=1 are stored. Still sorted by key.
+```
+
+---
+
+### How is Multimap Different from Map?
+
+| Feature                  | `map`                        | `multimap`                     |
+|--------------------------|------------------------------|--------------------------------|
+| Duplicate keys           | ❌ Ignored                   | ✅ Allowed                     |
+| Sorted by key            | ✅                           | ✅                             |
+| `mpp[key]` operator      | ✅ Supported                 | ❌ **Not supported**           |
+| `find(key)`              | Returns iterator to the key  | Returns iterator to **first** occurrence |
+| `count(key)`             | Returns 0 or 1               | Returns actual count           |
+| `erase(key)`             | Removes the one entry        | Removes **all** entries for that key |
+| Use case                 | One value per key            | Multiple values per key        |
+
+> ⚠️ **`multimap` does NOT support the `[]` operator** — since a key can map to multiple values, `mpp[key]` would be ambiguous. Use `insert()` or `emplace()` to add entries, and `find()` / `equal_range()` to retrieve them.
+
+> 💡 **Use a `multimap` when** one key needs to map to multiple values in sorted order — e.g. storing multiple phone numbers per person, multiple events on the same date, or grouping items by category.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainMmap() {
+
+    multimap<int, int> mpp;         // Note: multimap, not map
+
+    // --- Inserting (duplicate keys allowed) ---
+    mpp.insert({1, 2});             // {1→2}
+    mpp.insert({1, 3});             // {1→2, 1→3}  ← duplicate key accepted
+    mpp.insert({2, 5});             // {1→2, 1→3, 2→5}
+    mpp.emplace(2, 6);              // {1→2, 1→3, 2→5, 2→6}
+
+    // ❌ This does NOT work on multimap:
+    // mpp[1] = 10;                 — [] operator not supported
+
+    // --- count() returns actual frequency of a key ---
+    cout << mpp.count(1);           // Output: 2
+    cout << mpp.count(2);           // Output: 2
+
+    // --- find() returns iterator to the FIRST occurrence of a key ---
+    auto it = mpp.find(1);
+    if (it != mpp.end()) {
+        cout << it->first << " → " << it->second;  // Output: 1 → 2
+    }
+
+    // --- Iterating (always in sorted key order) ---
+    for (auto& [key, value] : mpp) {
+        cout << key << " → " << value << "\n";
+    }
+    // Output:
+    // 1 → 2
+    // 1 → 3
+    // 2 → 5
+    // 2 → 6
+
+    // --- erase(key) removes ALL entries for that key ---
+    mpp.erase(1);                   // Removes both 1→2 and 1→3
+                                    // {2→5, 2→6}
+
+    // --- erase(iterator) removes only ONE entry ---
+    auto it2 = mpp.find(2);
+    mpp.erase(it2);                 // Removes only the first 2→5
+                                    // {2→6}
+}
+```
+
+---
+
+### Retrieving All Values for a Key — `equal_range()`
+
+Since a key can have multiple values, `find()` only gets you the first one. Use `equal_range()` to get **all values** for a key:
+
+```cpp
+multimap<int, int> mpp = {{1,2}, {1,3}, {1,9}, {2,5}};
+
+// equal_range(key) returns a pair of iterators: [first, last)
+// covering all entries with that key
+auto range = mpp.equal_range(1);
+
+for (auto it = range.first; it != range.second; it++) {
+    cout << it->first << " → " << it->second << "\n";
+}
+// Output:
+// 1 → 2
+// 1 → 3
+// 1 → 9
+```
+
+---
+
+### The Critical Erase Distinction (same as multiset)
+
+```cpp
+multimap<int, int> mpp = {{1,2}, {1,3}, {1,9}, {2,5}};
+
+// ❌ Erases ALL entries with key = 1
+mpp.erase(1);
+// Result: {2→5}
+
+// ✅ Erases only the FIRST entry with key = 1
+mpp.erase(mpp.find(1));
+// Result: {1→3, 1→9, 2→5}
+```
+
+---
+
+### Quick Reference
+
+| Method                | Description                                               | Time           |
+|-----------------------|-----------------------------------------------------------|----------------|
+| `insert({key, val})`  | Insert a key-value pair (duplicates allowed)              | `O(log n)`     |
+| `emplace(key, val)`   | Construct pair in-place                                   | `O(log n)`     |
+| `erase(key)`          | Remove **all** entries with that key                      | `O(log n + k)` |
+| `erase(it)`           | Remove **one** entry at iterator position                 | `O(1)`         |
+| `find(key)`           | Iterator to **first** occurrence of key, or `end()`      | `O(log n)`     |
+| `count(key)`          | Number of entries with that key                           | `O(log n + k)` |
+| `equal_range(key)`    | Pair of iterators `[first, last)` for all entries of key | `O(log n)`     |
+| `lower_bound(key)`    | Iterator to first entry with key `>= key`                | `O(log n)`     |
+| `upper_bound(key)`    | Iterator to first entry with key `> key`                 | `O(log n)`     |
+| `size()`              | Total number of entries (counting duplicates)             | `O(1)`         |
+| `empty()`             | Returns `true` if multimap is empty                       | `O(1)`         |
+| `clear()`             | Removes all entries                                       | `O(n)`         |
+| `mpp[key]`            | ❌ Not supported                                          | —              |
