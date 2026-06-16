@@ -770,3 +770,138 @@ while (!q.empty()) {
 | `size()`      | Number of elements in the queue                      | `size_t` |
 | `empty()`     | Returns `true` if the queue is empty                 | `bool`   |
 | `swap(other)` | Swap contents with another queue                     | `void`   |
+
+## 6. Priority Queue
+
+### What is a Priority Queue and Why Do We Need It?
+
+A `priority_queue` is a container adaptor where **every element has a priority**, and the element with the **highest priority is always at the top** — ready to be accessed or removed first.
+
+Unlike a regular `queue` (FIFO), a priority queue does **not** care about insertion order — it always serves the most important element first.
+
+Internally, it is implemented as a **binary heap**, which gives it efficient `O(log n)` push and pop operations.
+
+```
+  After pushing 5, 1, 8, 10:
+
+  Max-Heap (default):        Min-Heap (greater<int>):
+
+        [10]                         [1]
+       /    \                       /   \
+     [8]    [5]                   [5]   [8]
+     /                            /
+   [1]                          [10]
+
+   top() = 10                  top() = 1
+   (largest first)             (smallest first)
+```
+
+---
+
+### How is Priority Queue Different from Others?
+
+| Feature                  | `queue`      | `stack`      | `priority_queue`              |
+|--------------------------|--------------|--------------|-------------------------------|
+| Order                    | FIFO         | LIFO         | Priority-based (heap)         |
+| Top element              | Oldest item  | Newest item  | Highest (or lowest) priority  |
+| Insert                   | `O(1)`       | `O(1)`       | `O(log n)`                    |
+| Remove                   | `O(1)`       | `O(1)`       | `O(log n)`                    |
+| Random access            | ❌           | ❌           | ❌                            |
+| Iterators                | ❌           | ❌           | ❌                            |
+| Use case                 | BFS, scheduling | DFS, undo | Dijkstra, task scheduling, top-K problems |
+
+> 💡 **Use a `priority_queue` when** you always need the largest (or smallest) element quickly — e.g. Dijkstra's shortest path, Huffman encoding, scheduling by urgency, or finding the top-K elements.
+
+---
+
+### Max-Heap (Default)
+
+The **largest** element is always at the top.
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainMaxHeap() {
+
+    priority_queue<int> pq;     // Max-heap by default
+
+    pq.push(5);                 // {5}          ← top: 5
+    pq.push(1);                 // {5, 1}       ← top: 5
+    pq.push(8);                 // {8, 5, 1}    ← top: 8
+    pq.emplace(10);             // {10, 8, 5, 1}← top: 10
+    // emplace constructs in-place — slightly faster than push
+
+    cout << pq.top();           // Output: 10  — always the largest element
+
+    pq.pop();                   // Removes 10 → {8, 5, 1}
+
+    cout << pq.top();           // Output: 8
+
+    cout << pq.size();          // Output: 3
+    cout << pq.empty();         // Output: 0 (false)
+}
+```
+
+---
+
+### Min-Heap
+
+Pass `greater<int>` as the comparator to flip the order — the **smallest** element is at the top.
+
+```cpp
+void explainMinHeap() {
+
+    priority_queue<int, vector<int>, greater<int>> pq;  // Min-heap
+
+    pq.push(5);                 // {5}             ← top: 5
+    pq.push(1);                 // {1, 5}          ← top: 1
+    pq.push(8);                 // {1, 5, 8}       ← top: 1
+    pq.emplace(10);             // {1, 5, 8, 10}   ← top: 1
+
+    cout << pq.top();           // Output: 1  — always the smallest element
+
+    pq.pop();                   // Removes 1 → {5, 8, 10}
+
+    cout << pq.top();           // Output: 5
+}
+```
+
+> ⚠️ The template signature for a min-heap is `priority_queue<Type, Container, Comparator>`:
+> - `Type` — the data type (`int`, `pair<int,int>`, etc.)
+> - `Container` — always `vector<Type>` here
+> - `Comparator` — `greater<Type>` for min-heap, omit (or use `less<Type>`) for max-heap
+
+---
+
+### Common Pattern — Drain in Priority Order
+
+Since `pop()` does not return a value, read `top()` before each pop:
+
+```cpp
+priority_queue<int> pq;
+pq.push(3);
+pq.push(1);
+pq.push(4);
+pq.push(1);
+pq.push(5);
+
+while (!pq.empty()) {
+    cout << pq.top() << " ";
+    pq.pop();
+}
+// Output: 5 4 3 1 1  (largest to smallest)
+```
+
+---
+
+### Quick Reference
+
+| Method        | Description                                           | Time       | Returns  |
+|---------------|-------------------------------------------------------|------------|----------|
+| `push(x)`     | Insert `x` into the heap                             | `O(log n)` | `void`   |
+| `emplace(x)`  | Construct `x` in-place in the heap                   | `O(log n)` | `void`   |
+| `pop()`       | Remove the top element (**does not return it**)       | `O(log n)` | `void`   |
+| `top()`       | Access the top element (no removal)                  | `O(1)`     | `const T&`|
+| `size()`      | Number of elements                                   | `O(1)`     | `size_t` |
+| `empty()`     | Returns `true` if the heap is empty                  | `O(1)`     | `bool`   |
