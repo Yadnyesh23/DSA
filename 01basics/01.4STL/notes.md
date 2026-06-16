@@ -655,3 +655,118 @@ while (!st.empty()) {
 | `size()`      | Number of elements in the stack                      | `size_t` |
 | `empty()`     | Returns `true` if the stack is empty                 | `bool`   |
 | `swap(other)` | Swap contents with another stack                     | `void`   |
+
+## 5. Queue
+
+### What is a Queue and Why Do We Need It?
+
+A `queue` is a **FIFO** (First In, First Out) container adaptor — the first element pushed in is the first one to come out, just like a real-world queue (line of people).
+
+```
+  push() →  ┌───┬───┬───┐  → pop()
+            │ 1 │ 2 │ 9 │
+            └───┴───┴───┘
+              ↑           ↑
+           front()      back()
+        (next to leave)  (last to arrive)
+```
+
+Like `stack`, a `queue` is a **container adaptor** built on top of `deque` by default. It restricts access to only **two ends** — you can only add at the back and remove from the front. No iterators or random access.
+
+---
+
+### How is Queue Different from Vector, List, Deque, and Stack?
+
+| Feature                   | `vector`  | `list`    | `deque`   | `stack` (LIFO) | `queue` (FIFO)   |
+|---------------------------|-----------|-----------|-----------|----------------|------------------|
+| Access pattern            | Any index | Any node  | Any index | Top only       | Front & back only|
+| Random access (`[i]`)     | ✅        | ❌        | ✅        | ❌             | ❌               |
+| Insert at back            | ✅ `O(1)` | ✅ `O(1)` | ✅ `O(1)` | ✅ `O(1)`      | ✅ `O(1)`        |
+| Remove from front         | ❌ `O(n)` | ✅ `O(1)` | ✅ `O(1)` | ❌ Not allowed | ✅ `O(1)`        |
+| Iterators                 | ✅        | ✅        | ✅        | ❌             | ❌               |
+| Order                     | —         | —         | —         | LIFO           | FIFO             |
+| Use case                  | General   | Middle ops| Both ends | Undo, DFS      | Scheduling, BFS  |
+
+> 💡 **Use a `queue` when** order of processing matters and you need to handle tasks in the order they arrive — e.g. printer job scheduling, BFS (Breadth-First Search), or CPU task scheduling.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainQueue() {
+
+    queue<int> q;               // Empty queue: {}
+
+    // --- Pushing elements (always added to the back) ---
+    q.push(1);                  // {1}       ← front: 1, back: 1
+    q.push(2);                  // {1, 2}    ← front: 1, back: 2
+    q.emplace(3);               // {1, 2, 3} ← front: 1, back: 3
+    // emplace constructs in-place — slightly faster than push
+
+    // --- Modifying the back element ---
+    q.back() += 5;              // {1, 2, 8} ← back (3) becomes 3+5 = 8
+    // back() returns a reference, so you can modify it directly
+
+    // --- Accessing elements ---
+    cout << q.front();          // Output: 1  — next element to be removed
+    cout << q.back();           // Output: 8  — most recently added element
+    // ⚠️ No random access — you cannot do q[i] or q.at(i)
+
+    // --- Removing from the front ---
+    q.pop();                    // Removes 1 → {2, 8}
+    // ⚠️ pop() does NOT return the value — call front() before pop() if you need it
+
+    cout << q.front();          // Output: 2
+    cout << q.size();           // Output: 2
+    cout << q.empty();          // Output: 0 (false)
+
+    // --- Swapping two queues ---
+    queue<int> q1, q2;
+    q1.push(10);
+    q1.push(20);                // q1: {10, 20}
+    q2.push(99);                // q2: {99}
+
+    q1.swap(q2);                // q1: {99}  |  q2: {10, 20}
+}
+```
+
+---
+
+### Common Pattern — Read Front Before Popping
+
+Since `pop()` does not return a value, always read the front first:
+
+```cpp
+queue<int> q;
+q.push(10);
+q.push(20);
+q.push(30);
+
+// Drain the queue in FIFO order
+while (!q.empty()) {
+    cout << q.front() << " ";  // Read
+    q.pop();                    // Then remove
+}
+// Output: 10 20 30
+```
+
+> Notice how this is the **opposite of stack** — stack outputs `30 20 10` (LIFO), queue outputs `10 20 30` (FIFO).
+
+---
+
+### Quick Reference
+
+| Method        | Description                                          | Returns  |
+|---------------|------------------------------------------------------|----------|
+| `push(x)`     | Add `x` to the back                                  | `void`   |
+| `emplace(x)`  | Construct `x` in-place at the back                   | `void`   |
+| `pop()`       | Remove the front element (**does not return it**)     | `void`   |
+| `front()`     | Access the front element (next to be removed)        | `T&`     |
+| `back()`      | Access the back element (most recently added)        | `T&`     |
+| `size()`      | Number of elements in the queue                      | `size_t` |
+| `empty()`     | Returns `true` if the queue is empty                 | `bool`   |
+| `swap(other)` | Swap contents with another queue                     | `void`   |
