@@ -905,3 +905,151 @@ while (!pq.empty()) {
 | `top()`       | Access the top element (no removal)                  | `O(1)`     | `const T&`|
 | `size()`      | Number of elements                                   | `O(1)`     | `size_t` |
 | `empty()`     | Returns `true` if the heap is empty                  | `O(1)`     | `bool`   |
+
+## 7. Set
+
+### What is a Set and Why Do We Need It?
+
+A `set` is an associative container that stores elements in **sorted order** and ensures **all elements are unique** — duplicate insertions are silently ignored.
+
+Internally, a `set` is implemented as a **Red-Black Tree** (a self-balancing BST), which gives it `O(log n)` for insert, find, and erase operations.
+
+```
+  After inserting 1, 2, 2, 4, 3:
+
+  Stored as:  { 1, 2, 3, 4 }
+               ↑           ↑
+            begin()       end()-1
+
+  - Duplicate 2 was ignored
+  - 3 was auto-sorted into the correct position
+```
+
+---
+
+### How is Set Different from Others?
+
+| Feature               | `vector`      | `unordered_set`  | `set`                  |
+|-----------------------|---------------|------------------|------------------------|
+| Stores duplicates     | ✅            | ❌               | ❌                     |
+| Sorted order          | ❌ (insertion)| ❌ (unordered)   | ✅ Always sorted       |
+| Random access (`[i]`) | ✅ `O(1)`     | ❌               | ❌                     |
+| Find                  | `O(n)`        | `O(1)` avg       | `O(log n)`             |
+| Insert                | `O(1)` amort  | `O(1)` avg       | `O(log n)`             |
+| Use case              | General list  | Fast lookup      | Sorted unique elements |
+
+> 💡 **Use a `set` when** you need a collection with **no duplicates** and want elements to always be in **sorted order** — e.g. tracking unique visitors, maintaining a sorted leaderboard, or checking membership efficiently.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainSet() {
+
+    set<int> st;
+
+    // --- Inserting elements ---
+    st.insert(1);               // {1}
+    st.emplace(2);              // {1, 2}
+    st.insert(2);               // {1, 2}       ← duplicate ignored
+    st.insert(4);               // {1, 2, 4}
+    st.insert(3);               // {1, 2, 3, 4} ← auto-sorted into correct position
+
+    // --- Iterating (always in sorted order) ---
+    for (auto element : st) {
+        cout << element << " ";
+    }
+    // Output: 1 2 3 4
+
+    // --- Finding an element ---
+    st.insert(5);               // {1, 2, 3, 4, 5}
+
+    auto it = st.find(3);       // Returns iterator pointing to 3
+    cout << *it;                // Output: 3
+
+    auto it2 = st.find(6);      // 6 is not in the set
+    if (it2 == st.end()) {
+        cout << "Not found";    // Output: Not found
+    }
+    // ⚠️ Always check against st.end() before dereferencing a find() result
+
+    // --- Counting (useful for membership check) ---
+    int cnt = st.count(3);      // Output: 1  — 3 is present
+    int cnt2 = st.count(6);     // Output: 0  — 6 is not present
+    // In a set, count() only ever returns 0 or 1 (no duplicates exist)
+
+    // --- Erasing by value ---
+    set<int> st2 = {1, 2, 3};
+    st2.erase(2);               // {1, 3}
+
+    // --- Erasing by iterator range [first, last) ---
+    set<int> st3 = {1, 2, 3, 4, 5};
+    auto it3 = st3.find(2);     // Points to 2
+    auto it4 = st3.find(5);     // Points to 5
+    st3.erase(it3, it4);        // Erases [2, 5) → removes 2, 3, 4
+                                 // Result: {1, 5}
+    // ⚠️ Range erase is [first, last) — last element (5) is NOT removed
+
+    // --- Size & empty check ---
+    cout << st.size();          // Output: 5
+    cout << st.empty();         // Output: 0 (false)
+}
+```
+
+---
+
+### Lower Bound & Upper Bound
+
+These are especially powerful with sets since the data is always sorted:
+
+```cpp
+set<int> st = {1, 2, 3, 4, 5};
+
+// lower_bound(x) → iterator to first element >= x
+auto lb = st.lower_bound(3);
+cout << *lb;                    // Output: 3
+
+// upper_bound(x) → iterator to first element > x
+auto ub = st.upper_bound(3);
+cout << *ub;                    // Output: 4
+```
+
+---
+
+### Common Pattern — Check Before Access
+
+```cpp
+set<int> st = {1, 2, 3, 4, 5};
+
+// Safe way to find and use an element
+auto it = st.find(3);
+if (it != st.end()) {
+    cout << "Found: " << *it;   // Output: Found: 3
+    st.erase(it);               // Erase by iterator — O(1) vs erase by value O(log n)
+}
+```
+
+> 💡 Erasing by **iterator** is `O(1)`. Erasing by **value** is `O(log n)` because it first has to find the element. If you already have the iterator, prefer `erase(it)`.
+
+---
+
+### Quick Reference
+
+| Method               | Description                                          | Time       | Returns       |
+|----------------------|------------------------------------------------------|------------|---------------|
+| `insert(x)`          | Insert `x` (ignored if duplicate)                   | `O(log n)` | `pair<it,bool>` |
+| `emplace(x)`         | Construct `x` in-place (ignored if duplicate)       | `O(log n)` | `pair<it,bool>` |
+| `erase(x)`           | Remove element with value `x`                       | `O(log n)` | `void`        |
+| `erase(it)`          | Remove element at iterator position                 | `O(1)`     | `iterator`    |
+| `erase(it1, it2)`    | Remove range `[it1, it2)`                           | `O(k log n)` | `iterator`  |
+| `find(x)`            | Returns iterator to `x`, or `end()` if not found   | `O(log n)` | `iterator`    |
+| `count(x)`           | Returns `1` if `x` exists, `0` otherwise            | `O(log n)` | `int`         |
+| `lower_bound(x)`     | Iterator to first element `>= x`                   | `O(log n)` | `iterator`    |
+| `upper_bound(x)`     | Iterator to first element `> x`                    | `O(log n)` | `iterator`    |
+| `size()`             | Number of elements                                  | `O(1)`     | `size_t`      |
+| `empty()`            | Returns `true` if set is empty                      | `O(1)`     | `bool`        |
+| `clear()`            | Removes all elements                                | `O(n)`     | `void`        |
