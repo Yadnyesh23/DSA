@@ -545,3 +545,113 @@ for (auto it = dq.begin(); it != dq.end(); it++) {
 | `empty()`           | Returns `true` if deque is empty                 |
 | `clear()`           | Remove all elements                              |
 | `swap(other)`       | Swap contents with another deque                 |
+
+## 4. Stack
+
+### What is a Stack and Why Do We Need It?
+
+A `stack` is a **LIFO** (Last In, First Out) container adaptor — the last element pushed in is the first one to come out, just like a stack of plates.
+
+```
+  push(5) →  ┌───┐  ← top()   pop() removes this first
+             │ 5 │
+             │ 3 │
+             │ 3 │
+             │ 2 │
+             │ 1 │
+             └───┘
+```
+
+A `stack` is a **container adaptor** — it is built on top of another container (by default `deque`) and restricts access to only one end (the top). It does **not** expose iterators or random access — you can only see and remove the top element.
+
+---
+
+### How is Stack Different from Vector, List, and Deque?
+
+| Feature                  | `vector`  | `list`    | `deque`   | `stack`         |
+|--------------------------|-----------|-----------|-----------|-----------------|
+| Access pattern           | Any index | Any node  | Any index | Top only (LIFO) |
+| Random access (`[i]`)    | ✅        | ❌        | ✅        | ❌              |
+| Insert at front          | ❌ `O(n)` | ✅ `O(1)` | ✅ `O(1)` | ❌ Not allowed  |
+| Insert at back           | ✅ `O(1)` | ✅ `O(1)` | ✅ `O(1)` | ✅ via `push()` |
+| Iterators                | ✅        | ✅        | ✅        | ❌ None         |
+| Use case                 | General   | Frequent middle ops | Both-end ops | Undo, backtracking, recursion |
+
+> 💡 **Use a `stack` when** you need strict LIFO ordering — e.g. undo/redo operations, balancing parentheses, depth-first search (DFS), or function call simulation.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainStack() {
+
+    stack<int> st;              // Empty stack: {}
+
+    // --- Pushing elements (always added to the top) ---
+    st.push(1);                 // {1}         ← top: 1
+    st.push(2);                 // {2, 1}      ← top: 2
+    st.push(3);                 // {3, 2, 1}   ← top: 3
+    st.push(3);                 // {3, 3, 2, 1}← top: 3
+    st.emplace(5);              // {5, 3, 3, 2, 1} ← top: 5
+    // emplace constructs in-place — slightly faster than push
+
+    // --- Accessing the top ---
+    cout << st.top();           // Output: 5  — only the top is visible, nothing below
+
+    // --- Removing the top ---
+    st.pop();                   // Removes 5 → {3, 3, 2, 1}
+    // ⚠️ pop() does NOT return the value — call top() before pop() if you need it
+
+    cout << st.top();           // Output: 3
+    cout << st.size();          // Output: 4
+
+    // --- Empty check ---
+    cout << st.empty();         // Output: 0 (false)
+
+    // --- Swapping two stacks ---
+    stack<int> st1, st2;
+    st1.push(10);
+    st1.push(20);               // st1: {20, 10}
+    st2.push(99);               // st2: {99}
+
+    st1.swap(st2);              // st1: {99}  |  st2: {20, 10}
+}
+```
+
+---
+
+### Common Pattern — Read Top Before Popping
+
+Since `pop()` does not return a value, always read the top first:
+
+```cpp
+stack<int> st;
+st.push(10);
+st.push(20);
+st.push(30);
+
+// Drain the stack
+while (!st.empty()) {
+    cout << st.top() << " ";   // Read
+    st.pop();                   // Then remove
+}
+// Output: 30 20 10
+```
+
+---
+
+### Quick Reference
+
+| Method        | Description                                          | Returns  |
+|---------------|------------------------------------------------------|----------|
+| `push(x)`     | Add `x` to the top                                   | `void`   |
+| `emplace(x)`  | Construct `x` in-place at the top                    | `void`   |
+| `pop()`       | Remove the top element (**does not return it**)       | `void`   |
+| `top()`       | Access the top element (no removal)                  | `T&`     |
+| `size()`      | Number of elements in the stack                      | `size_t` |
+| `empty()`     | Returns `true` if the stack is empty                 | `bool`   |
+| `swap(other)` | Swap contents with another stack                     | `void`   |
