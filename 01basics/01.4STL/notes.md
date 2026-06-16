@@ -1200,3 +1200,139 @@ ms.erase(lb, ub);               // {2, 3}
 | `size()`             | Total number of elements (counting duplicates)          | `O(1)`            |
 | `empty()`            | Returns `true` if multiset is empty                     | `O(1)`            |
 | `clear()`            | Removes all elements                                    | `O(n)`            |
+
+## 9. Unordered Set
+
+### What is an Unordered Set and Why Do We Need It?
+
+An `unordered_set` stores **unique elements** just like a `set`, but does **not sort them**. Instead, it uses a **hash table** internally — each element is passed through a hash function to determine its storage bucket.
+
+The payoff for giving up sorted order is **much faster lookups** — average `O(1)` instead of `O(log n)`.
+
+```
+  Insertions: 5, 3, 1, 4, 2
+
+  set stores:           { 1, 2, 3, 4, 5 }   ← always sorted
+  unordered_set stores: { 5, 3, 1, 4, 2 }   ← order unpredictable (hash-based)
+
+  Both reject duplicates. Only the order differs.
+```
+
+---
+
+### How is Unordered Set Different from Set and Multiset?
+
+| Feature                | `set`           | `multiset`      | `unordered_set`         |
+|------------------------|-----------------|-----------------|-------------------------|
+| Internal structure     | Red-Black Tree  | Red-Black Tree  | Hash Table              |
+| Duplicates             | ❌              | ✅              | ❌                      |
+| Sorted order           | ✅              | ✅              | ❌ Unpredictable        |
+| Insert                 | `O(log n)`      | `O(log n)`      | `O(1)` avg / `O(n)` worst |
+| Find                   | `O(log n)`      | `O(log n)`      | `O(1)` avg / `O(n)` worst |
+| Erase                  | `O(log n)`      | `O(log n)`      | `O(1)` avg / `O(n)` worst |
+| `lower_bound`          | ✅              | ✅              | ❌ Not supported        |
+| `upper_bound`          | ✅              | ✅              | ❌ Not supported        |
+| Use case               | Sorted unique   | Sorted with dups| Fast unique lookup      |
+
+> ⚠️ The `O(n)` worst case occurs when many elements hash to the same bucket (hash collision). In practice with random data this is rare, but it can be triggered in competitive programming with adversarial inputs. In such cases, use `set` instead.
+
+> 💡 **Use `unordered_set` when** you only need fast membership checks and don't care about order — e.g. checking if a word exists in a dictionary, removing duplicates from a list, or visited-node tracking in graph problems.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainUSet() {
+
+    unordered_set<int> us;
+
+    // --- Inserting elements ---
+    us.insert(5);               // {5}
+    us.insert(3);               // {5, 3}      ← order not guaranteed
+    us.insert(1);               // {5, 3, 1}
+    us.insert(3);               // {5, 3, 1}   ← duplicate 3 ignored
+    us.emplace(4);              // {5, 3, 1, 4}
+
+    // --- Finding an element ---
+    auto it = us.find(3);
+    if (it != us.end()) {
+        cout << *it;            // Output: 3
+    }
+
+    auto it2 = us.find(99);
+    if (it2 == us.end()) {
+        cout << "Not found";    // Output: Not found
+    }
+    // ⚠️ Always check against us.end() before dereferencing — same as set
+
+    // --- Count (only 0 or 1, since no duplicates) ---
+    cout << us.count(3);        // Output: 1  — 3 is present
+    cout << us.count(99);       // Output: 0  — 99 is not present
+
+    // --- Erasing elements ---
+    us.erase(3);                // Removes 3 by value
+    us.erase(us.find(1));       // Removes 1 by iterator — O(1)
+
+    // --- Size & empty check ---
+    cout << us.size();          // Output: 2  ({5, 4} remaining)
+    cout << us.empty();         // Output: 0 (false)
+
+    // --- Clear all elements ---
+    us.clear();                 // {}
+
+    // ❌ These do NOT work on unordered_set:
+    // us.lower_bound(3);       — no ordering, so no lower bound
+    // us.upper_bound(3);       — no ordering, so no upper bound
+}
+```
+
+---
+
+### Iterating an Unordered Set
+
+```cpp
+unordered_set<int> us = {5, 3, 1, 4, 2};
+
+for (auto element : us) {
+    cout << element << " ";
+}
+// Output order is unpredictable — could be: 2 4 1 3 5
+// Do NOT rely on iteration order in unordered_set
+```
+
+---
+
+### Set vs Unordered Set — When to Use Which?
+
+```
+Need sorted output?              → set
+Need lower_bound / upper_bound?  → set
+Dealing with custom types?       → set  (easier comparator)
+Just need fast lookup/insert?    → unordered_set
+Working with large datasets?     → unordered_set (O(1) avg beats O(log n))
+Worried about hash collisions?   → set  (guaranteed O(log n) worst case)
+```
+
+---
+
+### Quick Reference
+
+| Method           | Description                                          | Time                    |
+|------------------|------------------------------------------------------|-------------------------|
+| `insert(x)`      | Insert `x` (ignored if duplicate)                   | `O(1)` avg              |
+| `emplace(x)`     | Construct `x` in-place (ignored if duplicate)       | `O(1)` avg              |
+| `erase(x)`       | Remove element with value `x`                       | `O(1)` avg              |
+| `erase(it)`      | Remove element at iterator position                 | `O(1)`                  |
+| `find(x)`        | Iterator to `x`, or `end()` if not found           | `O(1)` avg              |
+| `count(x)`       | Returns `1` if present, `0` otherwise               | `O(1)` avg              |
+| `size()`         | Number of elements                                  | `O(1)`                  |
+| `empty()`        | Returns `true` if empty                             | `O(1)`                  |
+| `clear()`        | Removes all elements                                | `O(n)`                  |
+| `lower_bound(x)` | ❌ Not supported                                    | —                       |
+| `upper_bound(x)` | ❌ Not supported                                    | —                       |
+
+<!-- ## 10. Maps -->
