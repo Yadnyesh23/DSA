@@ -1053,3 +1053,150 @@ if (it != st.end()) {
 | `size()`             | Number of elements                                  | `O(1)`     | `size_t`      |
 | `empty()`            | Returns `true` if set is empty                      | `O(1)`     | `bool`        |
 | `clear()`            | Removes all elements                                | `O(n)`     | `void`        |
+
+## 8. Multiset
+
+### What is a Multiset and Why Do We Need It?
+
+A `multiset` is exactly like a `set` — it stores elements in **sorted order** — but with one key difference: it **allows duplicate values**.
+
+Internally, it is also implemented as a **Red-Black Tree**, giving `O(log n)` for insert, find, and erase.
+
+```
+  Insertions: 1, 1, 1, 2, 3
+
+  Stored as:  { 1, 1, 1, 2, 3 }
+               ↑              ↑
+            begin()        end()-1
+
+  - All three 1s are kept (unlike set which would store just one)
+  - Still sorted automatically
+```
+
+---
+
+### How is Multiset Different from Set and Others?
+
+| Feature               | `set`              | `multiset`              | `unordered_multiset`     |
+|-----------------------|--------------------|-------------------------|--------------------------|
+| Duplicates            | ❌ Unique only     | ✅ Allowed              | ✅ Allowed               |
+| Sorted order          | ✅                 | ✅                      | ❌                       |
+| Find                  | `O(log n)`         | `O(log n)`              | `O(1)` avg               |
+| Insert                | `O(log n)`         | `O(log n)`              | `O(1)` avg               |
+| `count(x)`            | Returns 0 or 1     | Returns actual count    | Returns actual count     |
+| `erase(x)`            | Removes the one copy | Removes **all** copies | Removes **all** copies  |
+
+> 💡 **Use a `multiset` when** you need a sorted collection that **allows duplicates** — e.g. tracking scores where ties are possible, frequency counting with sorted access, or maintaining a sorted list of events.
+
+---
+
+### Declaration & Common Operations
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+void explainMultiset() {
+
+    multiset<int> ms;
+
+    // --- Inserting elements (duplicates allowed) ---
+    ms.insert(1);               // {1}
+    ms.insert(1);               // {1, 1}
+    ms.insert(1);               // {1, 1, 1}
+    ms.insert(2);               // {1, 1, 1, 2}
+    ms.insert(3);               // {1, 1, 1, 2, 3}
+
+    // --- count() returns the actual frequency ---
+    cout << ms.count(1);        // Output: 3
+    cout << ms.count(2);        // Output: 1
+
+    // --- erase(value) removes ALL copies of that value ---
+    ms.erase(1);                // Removes all 1s → {2, 3}
+    // ⚠️ This is different from set where there's only ever one copy
+
+    // --- Rebuild to demonstrate single deletion ---
+    ms.insert(1);               // {1, 2, 3}
+    ms.insert(1);               // {1, 1, 2, 3}
+    ms.insert(1);               // {1, 1, 1, 2, 3}
+
+    // --- erase(iterator) removes only ONE occurrence ---
+    ms.erase(ms.find(1));       // find(1) returns iterator to first 1
+                                 // Only that one 1 is erased → {1, 1, 2, 3}
+    // ✅ This is the correct way to delete just a single duplicate
+
+    cout << ms.count(1);        // Output: 2  — one 1 was removed, two remain
+
+    // --- find() works the same as set ---
+    auto it = ms.find(2);
+    if (it != ms.end()) {
+        cout << *it;            // Output: 2
+    }
+
+    // --- Size & empty check ---
+    cout << ms.size();          // Output: 4  ({1, 1, 2, 3})
+    cout << ms.empty();         // Output: 0 (false)
+
+    // --- Clear all elements ---
+    ms.clear();                 // {}
+}
+```
+
+---
+
+### The Critical Erase Distinction
+
+This is the most important thing to understand about `multiset`:
+
+```cpp
+multiset<int> ms = {1, 1, 1, 2, 3};
+
+// ❌ Erases ALL copies of 1
+ms.erase(1);
+// Result: {2, 3}
+
+// ✅ Erases only ONE copy of 1
+ms.erase(ms.find(1));
+// Result: {1, 1, 2, 3}
+```
+
+| Erase call          | What it removes               | Time         |
+|---------------------|-------------------------------|--------------|
+| `erase(value)`      | **All** elements equal to value | `O(log n + k)` where k = count |
+| `erase(iterator)`   | **Only one** element at that position | `O(1)`  |
+| `erase(it1, it2)`   | All elements in range `[it1, it2)` | `O(k)`  |
+
+---
+
+### Lower Bound & Upper Bound
+
+These work the same as in `set` and are useful for range queries with duplicates:
+
+```cpp
+multiset<int> ms = {1, 1, 1, 2, 3};
+
+auto lb = ms.lower_bound(1);    // Iterator to first element >= 1 (first 1)
+auto ub = ms.upper_bound(1);    // Iterator to first element >  1 (the 2)
+
+// Erase all 1s using bounds (alternative to erase(value))
+ms.erase(lb, ub);               // {2, 3}
+```
+
+---
+
+### Quick Reference
+
+| Method               | Description                                              | Time              |
+|----------------------|----------------------------------------------------------|-------------------|
+| `insert(x)`          | Insert `x` (duplicates allowed)                         | `O(log n)`        |
+| `emplace(x)`         | Construct `x` in-place                                  | `O(log n)`        |
+| `erase(x)`           | Remove **all** elements equal to `x`                    | `O(log n + k)`    |
+| `erase(it)`          | Remove **one** element at iterator position             | `O(1)`            |
+| `erase(it1, it2)`    | Remove range `[it1, it2)`                               | `O(k)`            |
+| `find(x)`            | Iterator to first occurrence of `x`, or `end()`        | `O(log n)`        |
+| `count(x)`           | Number of occurrences of `x`                            | `O(log n + k)`    |
+| `lower_bound(x)`     | Iterator to first element `>= x`                       | `O(log n)`        |
+| `upper_bound(x)`     | Iterator to first element `> x`                        | `O(log n)`        |
+| `size()`             | Total number of elements (counting duplicates)          | `O(1)`            |
+| `empty()`            | Returns `true` if multiset is empty                     | `O(1)`            |
+| `clear()`            | Removes all elements                                    | `O(n)`            |
