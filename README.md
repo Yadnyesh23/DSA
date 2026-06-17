@@ -63,7 +63,7 @@
 - [x] Sum of First N Numbers
 - [x] Factorial of a given number
 - [x] Reverse an array
-- [ ] Check if String is Palindrome or Not
+- [x] Check if String is Palindrome or Not
 - [ ] Fibonacci Numbers
 
 ### 1.7 Learn Basic Hashing
