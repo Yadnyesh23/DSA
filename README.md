@@ -60,9 +60,9 @@
 - [x] Print N to 1 using Recursion
 - [ ] Print 1 to N using Recursion(Using backtracking)
 - [ ] Print N to 1 using Recursion(Using backtracking)
-- [ ] Sum of First N Numbers
-- [ ] Factorial of a given number
-- [ ] Reverse an array
+- [x] Sum of First N Numbers
+- [x] Factorial of a given number
+- [x] Reverse an array
 - [ ] Check if String is Palindrome or Not
 - [ ] Fibonacci Numbers
 
