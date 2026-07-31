@@ -64,7 +64,7 @@
 - [x] Factorial of a given number
 - [x] Reverse an array
 - [x] Check if String is Palindrome or Not
-- [ ] Fibonacci Numbers
+- [x] Fibonacci Numbers
 
 ### 1.7 Learn Basic Hashing
 - [ ]  Basic Hashing
@@ -74,7 +74,13 @@
 
 ## 2. Learn important Sorting techniques
 ### Sorting-1
+- [x]  Selection Sort
+- [x]  Bubble Sort
+- [ ]  Insertion Sort
 ### Sorting-2
+- [ ]  Basic Hashing
+- [ ]  Counting frequencies of array elements
+- [ ]  Highes occuring element in array
 
 
 ## 3. Solve problems on arrays
