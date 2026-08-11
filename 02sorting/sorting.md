@@ -166,3 +166,102 @@ Merge → Merge → Merge
                     ↓
              Sorted Array
 ```
+
+### 5. Recursive Bubble Sort
+
+Recursive Bubble Sort is a recursive version of the **Bubble Sort** algorithm. Instead of using an outer loop to perform multiple passes, it uses **recursion** to repeat the sorting process for the remaining unsorted portion of the array.
+
+**How it works:**
+
+1. Start with the entire array.
+2. Perform one complete Bubble Sort pass over the unsorted portion:
+   - Compare adjacent elements.
+   - If the left element is greater than the right element, swap them.
+3. After one complete pass, the largest element moves to the end of the unsorted portion.
+4. Reduce the size of the unsorted portion by one.
+5. Recursively call the function for the remaining unsorted portion.
+6. Stop when only one element remains, because a single element is already sorted.
+
+**Example:**
+
+```text
+[1][2][3][4][5]
+
+        ↓ One pass
+
+[1][2][3][4][5]
+             ↑
+        Largest fixed
+
+        ↓ Recursive call
+
+[1][2][3][4]
+
+        ↓ One pass
+
+[1][2][3][4]
+          ↑
+      Largest fixed
+
+        ↓ Recursive call
+
+[1][2][3]
+
+        ↓ One pass
+
+[2][3][1]
+
+        ↓
+
+[1][2][3][4][5]
+```
+
+**Base Case:**  
+The recursion stops when only one element remains:
+
+```text
+n == 1
+```
+
+A single element is already sorted, so no further work is required.
+
+**Time Complexity:**
+
+| Case    | Complexity |
+|---------|------------|
+| Best    | O(n)       |
+| Average | O(n²)      |
+| Worst   | O(n²)      |
+
+**Why O(n²)?**  
+- Each recursive call performs a Bubble Sort pass over the remaining unsorted portion.  
+- The number of comparisons is approximately:  
+  \[
+  (n - 1) + (n - 2) + \dots + 1 = \frac{n(n - 1)}{2}
+  \]  
+- Therefore, the average and worst-case time complexity is **O(n²)**.  
+- With the no-swap optimization, the best case becomes **O(n)** because the algorithm can stop early when the array is already sorted.
+
+**Space Complexity:** O(n)  
+The algorithm uses O(n) space because of the recursive call stack.
+
+**Stable:** Yes
+
+**In-place:** Yes
+
+**Key Idea:**  
+Perform one Bubble Sort pass, fix the largest element at the end, reduce the unsorted portion, and recursively repeat.
+
+**Remember:**
+
+```text
+One Pass
+   ↓
+Largest Element Fixed
+   ↓
+Reduce n
+   ↓
+Recursive Call
+   ↓
+Repeat
+```
