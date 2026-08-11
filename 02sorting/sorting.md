@@ -54,8 +54,6 @@ Bubble Sort performs multiple passes over the array. In each pass, adjacent elem
 
 **In-place:** Yes
 
-
-
 ### 3. Insertion Sort
 
 Insertion Sort builds the sorted array one element at a time by repeatedly inserting the next unsorted element into its correct position in the already-sorted portion.
@@ -85,3 +83,86 @@ In the best case (already sorted array), each element is compared once and no sh
 **Stable:** Yes
 
 **In-place:** Yes
+
+### 4. Merge Sort
+
+Merge Sort is a divide-and-conquer sorting algorithm. It repeatedly divides the array into smaller subarrays until each subarray contains only one element, and then merges those subarrays back together in sorted order.
+
+**How it works:**
+- Start with the entire array.
+- Find the middle index of the current subarray.
+- Divide the array into two halves:
+  - Left half: `low` to `mid`
+  - Right half: `mid + 1` to `high`
+- Recursively divide both halves.
+- Continue dividing until `low == high`, meaning only one element remains.
+- Start merging the smaller subarrays.
+  - During merging, compare the first unprocessed element of both sorted halves.
+  - Place the smaller element into a temporary array.
+  - Continue until all elements from both halves have been processed.
+- Copy the merged elements back into the original array.
+- Continue merging larger sorted subarrays until the entire array is sorted.
+
+**Example:**
+
+```text
+[1][2][3][4][5]
+
+        Divide
+           ↓
+[1][2][3][4][5]
+
+      ↓             ↓
+
+[2][5]
+
+   ↓                ↓
+
+             
+
+        Merge
+           ↓
+
+[1][2][4][5]
+
+           ↓
+
+[1][2][3][4][5]
+
+           ↓
+
+[2][3][4][5][1]
+```
+
+**Time Complexity:**
+
+| Case    | Complexity     |
+|---------|----------------|
+| Best    | O(n log n)     |
+| Average | O(n log n)     |
+| Worst   | O(n log n)     |
+
+**Why O(n log n)?**  
+- The array is divided into halves repeatedly, resulting in approximately `log n` levels of division.  
+- At every level, all `n` elements are processed during merging.  
+- Therefore: `n × log n = O(n log n)`.
+
+**Space Complexity:** O(n)  
+A temporary array is used during the merging process to store the sorted elements.
+
+**Stable:** Yes
+
+**In-place:** No
+
+**Key Idea:**  
+Divide the array until single elements remain, then merge the elements back in sorted order.
+
+**Remember:**
+
+```text
+Divide → Divide → Divide
+                    ↓
+Merge → Merge → Merge
+                    ↓
+             Sorted Array
+```
