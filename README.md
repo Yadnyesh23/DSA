@@ -85,6 +85,8 @@
 
 ## 3. Solve problems on arrays
 ### Easy
+-[x] Largest Element
+-[ ]  Second Largest Element
 ### Medium
 ### Hard
 
