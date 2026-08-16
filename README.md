@@ -76,17 +76,17 @@
 ### Sorting-1
 - [x]  Selection Sort
 - [x]  Bubble Sort
-- [ ]  Insertion Sort
+- [x]  Insertion Sort
 ### Sorting-2
-- [ ]  Basic Hashing
-- [ ]  Counting frequencies of array elements
-- [ ]  Highes occuring element in array
+- [x]  Merge Sort
+- [x]  Recursive Bubble Sort
 
 
 ## 3. Solve problems on arrays
 ### Easy
 -[x] Largest Element
--[ ]  Second Largest Element
+-[x] Second Largest Element
+-[x] Is array sorted
 ### Medium
 ### Hard
 
