@@ -87,6 +87,7 @@
 -[x] Largest Element
 -[x] Second Largest Element
 -[x] Is array sorted
+-[x] Two Sum
 ### Medium
 ### Hard
 
