@@ -84,10 +84,12 @@
 
 ## 3. Solve problems on arrays
 ### Easy
--[x] Largest Element
--[x] Second Largest Element
--[x] Is array sorted
--[x] Two Sum
+- [x] Largest Element
+- [x] Second Largest Element
+- [x] Is array sorted
+- [x] Two Sum
+- [x] Three Sum
+- [x] Move Zeros
 ### Medium
 ### Hard
 
